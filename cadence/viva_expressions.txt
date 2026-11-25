@@ -1,0 +1,21 @@
+```text
+# CO-VLFF (gpdk180, VDD = 1.8 V, fCLK = 125 MHz, TT, 27 C)
+# Cadence ADE L Stimulus & ViVA XL Calculator Expressions (Clip UNCHECKED)
+
+[Clock Source V2 (vpulse)]
+Voltage 1 = 0 V, Voltage 2 = 1.8 V
+Rise/Fall Time = 100p, Pulse Width = 3.9n, Period = 8n
+
+[8-Bit SIPO Data Source V1 (vpulse — 50% DA repeating '1100')]
+Voltage 1 = 0 V, Voltage 2 = 1.8 V
+Delay = 3n, Rise/Fall Time = 100p, Pulse Width = 16n, Period = 32n
+Transient Stop Time = 160n (20 cycles)
+
+[ViVA Calculator Expressions — Round 1]
+Average Rail Power (W)     : (-1.8) * average(IT("/V3/PLUS"))
+Peak Supply Current (A)    : abs(ymin(IT("/V3/PLUS")))
+Rising Clock-to-Q (s)      : delay(?wf1 VT("/CLK") ?value1 0.9 ?edge1 "rising" ?nth1 1 ?wf2 VT("/Q") ?value2 0.9 ?edge2 "rising" ?nth2 1)
+Falling Clock-to-Q (s)     : delay(?wf1 VT("/CLK") ?value1 0.9 ?edge1 "rising" ?nth1 2 ?wf2 VT("/Q") ?value2 0.9 ?edge2 "falling" ?nth2 1)
+
+[ViVA Calculator Expression — Round 2 True System Power (VDD + CLK)]
+Combined Total Power (W)   : (-1.8) * average(IT("/V3/PLUS")) + average(-VT("/CLK") * IT("/V2/PLUS"))
